@@ -37,8 +37,19 @@
 
 > [!tip] Victorized / Batch Model
 >
-> Also called Volcano or Pipeline Model.
->
 > - Each operator processes a batch of tuples at a time (e.g., 1024 tuples).
 > - The operator processes the batch in a loop, calling Next() on its children to retrieve their tuples.
 > - This model is efficient for modern hardware, as it reduces the overhead of function calls and allows for better CPU cache utilization.
+
+> [!note] # Processing Directions
+>
+> - Top-to-Bottom (Pull-based)
+>   The parent operator (root) initiates the data flow by requesting tuples from its child operators, which in turn request data from their children, propagating down to the leaf nodes (data sources).
+> - Bottom-to-Top (Push-based)
+>   The leaf nodes (data sources) initiate the data flow by pushing tuples up to their parent operators, which then process and push the data further up the tree to the root operator.
+
+> [!note] # Access Methods
+>
+> - **Sequential Scan**: Reads all tuples from a table one by one, To speed this up, systems use data skipping like Zone Maps—pre-computed aggregates (MIN, MAX, etc.) per page—to skip pages that definitely don't match the query.
+> - **Index Scan**: Uses an index to quickly locate tuples that match a specific condition, avoiding the need to scan the entire table.
+> - **Multi-Index Scan**: Combines multiple indexes to satisfy a query condition, useful when no single index covers all the required attributes.
