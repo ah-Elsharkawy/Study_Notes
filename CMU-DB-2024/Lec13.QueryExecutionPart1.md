@@ -53,3 +53,5 @@
 > - **Sequential Scan**: Reads all tuples from a table one by one, To speed this up, systems use data skipping like Zone Maps—pre-computed aggregates (MIN, MAX, etc.) per page—to skip pages that definitely don't match the query.
 > - **Index Scan**: Uses an index to quickly locate tuples that match a specific condition, avoiding the need to scan the entire table.
 > - **Multi-Index Scan**: Combines multiple indexes to satisfy a query condition, useful when no single index covers all the required attributes.
+
+> 
