@@ -43,10 +43,11 @@ Reliability is not just for critical infrastructure; even mundane business or pe
 
 ## 1.2 Scalability
 
-system's ability to cope with increased load.
+Scalability is the ability of a system to cope with increased load. It is not a single property but a set of questions regarding how to maintain performance when load parameters increase.
 
-- **Describing Load**: Scalability is the term we use to describe a system’s ability to cope with increased load.
-- **Describing Performance**: Performance is the term we use to describe the response time of a system under a particular load.
+- **Describing Load**: Load is described via **load parameters**, which are specific to the application. For example, Twitter’s scalability is defined by its "fan-out" load—the number of followers per user—which determines how many writes occur when a tweet is posted.
+- **Describing Performance**: In service-oriented systems, performance is usually measured by **response time**, specifically using **percentiles** (p50,p95,p99). Percentiles are superior to arithmetic means because they accurately represent the "tail latency" experienced by users.
+- **Coping with Load**: The author discusses the dichotomy between **scaling up** (vertical scaling to more powerful machines) and **scaling out** (horizontal scaling across multiple machines). While distributed systems are becoming the future default, they introduce significant complexity for stateful data systems.
 
 > [!question] response time vs latency vs service time
 >
@@ -57,3 +58,14 @@ system's ability to cope with increased load.
 > [!question] How can we measeure the performance by response time?
 >
 > - **Percentiles**: The median (50th percentile) is the value below which 50% of the values fall. The 95th percentile is the value below which 95% of the values fall.
+
+
+## 1.3 Maintainability
+
+Since the majority of software cost occurs during its ongoing maintenance, systems should be designed to minimize pain for engineering and operations teams.
+
+• **Operability**: This means making it easy for operations teams to keep the system running smoothly by providing visibility into health and supporting automation.
+
+• **Simplicity**: The goal is to remove **accidental complexity**—complexity that is not inherent in the problem but arises from the implementation.
+
+• **Evolvability**: Also known as extensibility or plasticity, this is the ease with which a system can be modified to meet unanticipated changes in requirements.

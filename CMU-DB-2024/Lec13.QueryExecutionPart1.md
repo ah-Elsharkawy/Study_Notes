@@ -90,3 +90,4 @@
 > - **Logical Tracking**: The system maintains a set of Record IDs (RIDs) that have already been touched by the current query.,
 > - **Validation**: Before applying an update, the modification operator checks if the current RID has already been modified.
 > - **Alternative Methods**: Some systems solve this by completing the entire scan first and storing the RIDs in a temporary buffer before starting any updates, though this is less scalable for massive datasets.
+
