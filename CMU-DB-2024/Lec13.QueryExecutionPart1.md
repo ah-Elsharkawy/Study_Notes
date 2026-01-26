@@ -44,9 +44,9 @@
 > [!note] Processing Directions
 >
 > - Top-to-Bottom (Pull-based)
->   The parent operator (root) initiates the data flow by requesting tuples from its child operators, which in turn request data from their children, propagating down to the leaf nodes (data sources).
+>   The parent operator (root) initiates the data flow by requesting tuples from its child operators, which in turn request data from their children, propagating down to the leaf nodes (data sources), it's the most common model used in DBMS.
 > - Bottom-to-Top (Push-based)
->   The leaf nodes (data sources) initiate the data flow by pushing tuples up to their parent operators, which then process and push the data further up the tree to the root operator.
+>   The leaf nodes (data sources) initiate the data flow by pushing tuples up to their parent operators, which then process and push the data further up the tree to the root operator, it's less common but can be more efficient for certain workloads, especially in streaming systems as we control where the data is held in memory either cpu registers or cache.
 
 > [!note] Access Methods
 >
@@ -91,3 +91,40 @@
 > - **Validation**: Before applying an update, the modification operator checks if the current RID has already been modified.
 > - **Alternative Methods**: Some systems solve this by completing the entire scan first and storing the RIDs in a temporary buffer before starting any updates, though this is less scalable for massive datasets.
 
+> [!tip] Expression Evaluation
+>
+> is the process by which a DBMS determines whether a tuple satisfies a specific predicate (like a WHERE clause) or calculates values for projections (like SELECT ID + 1).
+> Expressions are evaluated using an expression tree, where each node represents an operation (e.g., addition, comparison) or a value (e.g., column reference, constant).
+
+> [!bug] The Problem: Expression Trees (branching costs)
+>
+> When a SQL query is parsed, the DBMS logically represents the predicates as an expression tree.
+> - **Structure**:  Each node in the tree represents an expression type, such as comparison operators (=, <, >), arithmetic (+, -), constant values, or attribute references (table columns).
+> - **Evaluation Method**: The system evaluates these by performing a depth-first traversal. For every single tuple, the engine must look up the table schema, fetch the column values, and walk through the tree nodes to compute the result.
+> - **Performance Issue**: This "interpretive" approach is very slow for modern CPUs. Following pointers down a tree creates high `branching costs` and indirection, preventing the CPU from executing instructions sequentially, which is its fastest mode of operation.
+
+> [!note] The Solution: Just-In-Time (JIT) Compilation
+>
+> To solve tree traversal overhead, modern systems use JIT Compilation to convert the expression tree into machine code at runtime.
+> - **Code Generation**: The DBMS generates optimized machine code using frameworks like LLVM, which can produce highly efficient code tailored to the specific query.
+> - **Execution**: This machine code is then executed directly by the CPU, eliminating the overhead of tree traversal and interpretation.
+> - **PostgreSQL Example**: PostgreSQL can JIT-compile WHERE clauses. In a query with 50 million tuples, JIT might take 200ms to compile the code but save 600ms in execution time, resulting in a net win.
+> - **Trade-offs**: JIT is not always better. For simple queries that only access one or two tuples (OLTP), the time spent compiling the code might be longer than the time it takes to just run the query using the standard tree traversal.
+> - **Vectorization Hybrid**: Some systems, like Snowflake, avoid full JIT and instead use pre-compiled macros. They process a batch (vector) of tuples at once, which spreads the overhead of a function call across 1,024 tuples instead of just one.
+
+> [!note] Optimization Techniques
+>
+> Whether using JIT or standard traversal, the DBMS uses several logic optimizations to minimize work:
+> - **Constant Folding**: Pre-computing expressions that involve only constants at compile time rather than runtime, The DBMS identifies parts of an expression that consist only of constant values and computes them once before execution begins.
+> - - **Example**:  For WHERE UPPER(name) = UPPER('wutang'), the system pre-computes UPPER('wutang') into 'WUTANG'. This prevents the CPU from running the "uppercase" function millions of times for the same constant string.
+> - **Common Sub-expression Elimination**: Identifying and reusing the results of expressions that are computed multiple times within a query, The system looks for identical sub-expressions that appear multiple times in the same tree and ensures they are only calculated once per tuple.
+> - - **Example**: In WHERE (a + b) > 10 AND (a + b) < 20, the expression (a + b) is computed once and reused for both comparisons, reducing redundant calculations.
+
+> [!note] Summary Table: Expression Evaluation
+>
+|Feature|Standard Tree Traversal|JIT Compilation|
+|---|---|---|
+|**Model**|Interpretive (depth-first)|Compiled (Machine Code)|
+|**Speed**|Slow due to branching/pointers|Fast (direct CPU instructions)|
+|**Workload**|Simple/Short Queries (OLTP)|Complex/Large Scans (OLAP)|
+|**Flexibility**|High (handles any tree)|High, but adds compile-time lag|
