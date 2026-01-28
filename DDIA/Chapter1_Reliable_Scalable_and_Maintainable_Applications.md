@@ -1,6 +1,7 @@
 # Design Data Intensive Applications
 
 ## Chapter 1: Reliable, Scalable, and Maintainable Applications
+![[Ch1_Overview.png]]
 
 Modern applications are increasingly data-intensive, meaning their primary challenges involve the quantity, complexity, or speed of change of data, rather than raw CPU power. These applications are typically built using standard functional blocks, including:
 
@@ -21,7 +22,7 @@ When combining tools in this way—such as keeping a cache or search index in sy
 
 ## 1.1 Reliability
 
-Reliability is roughly defined as "continuing to work correctly, even when things go wrong". This includes performing the function expected by the user, tolerating user mistakes, maintaining performance under expected load, and preventing unauthorized access.
+Reliability is roughly defined as `continuing to work correctly, even when things go wrong`. This includes performing the function expected by the user, tolerating user mistakes, maintaining performance under expected load, and preventing unauthorized access.
 
 ### Faults vs. Failures
 
