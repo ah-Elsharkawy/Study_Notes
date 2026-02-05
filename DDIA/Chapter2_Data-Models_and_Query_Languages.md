@@ -1,5 +1,9 @@
 # Chapter 2: Data Models and Query Languages
 
+> [!TIP] **Important**
+> 
+> Read the highlighted parts of the book, It has more info.
+
 ## Overview
 
 Chapter 2 explores the history and application of **data models**, which the author considers the most critical aspect of software development because they dictate not only how code is written but also how we perceive the problems we are solving. Most applications are built by layering models on top of one another, with each layer providing a clean abstraction that hides the complexity of the layer below. The chapter specifically compares the **relational model**, the **document model**, and various **graph-based models**, evaluating their query languages and suitability for different application requirements.

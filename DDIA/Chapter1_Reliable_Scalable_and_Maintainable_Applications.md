@@ -3,6 +3,10 @@
 ## Chapter 1: Reliable, Scalable, and Maintainable Applications
 ![[Ch1_Overview.png]]
 
+> [!TIP] **Important**
+> 
+> Read the highlighted parts of the book, It has more info.
+
 Modern applications are increasingly data-intensive, meaning their primary challenges involve the quantity, complexity, or speed of change of data, rather than raw CPU power. These applications are typically built using standard functional blocks, including:
 
 - **Databases**: For storing data to be found again later.

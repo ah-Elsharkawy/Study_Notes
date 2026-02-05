@@ -66,7 +66,7 @@
 
 > [!note] Deleting data from LSM
 >
-> - **Tombstones**: when we delete a tuple from the Memtable, we don't actually delete it, we mark it as deleted and write a tombstone to the SSTable, the tombstone is a special marker that tells the DBMS that this tuple is deleted, then at the compaction process, the tombstone indicates that the tuple is deleted and it's not needed anymore, it's removed from the resilt SSTable.
+> - **Tombstones**: when we delete a tuple from the Memtable, we don't actually delete it, we mark it as deleted and write a tombstone to the SSTable, the tombstone is a special marker that tells the DBMS that this tuple is deleted, then at the compaction process, the tombstone indicates that the tuple is deleted and it's not needed anymore, it's removed from the result SSTable.
 
 > [!note] SSTables are self-contained meaning that it has metadata about the data stored in it sometiems it has the bloom filters to know which SSTable to read from.
 
