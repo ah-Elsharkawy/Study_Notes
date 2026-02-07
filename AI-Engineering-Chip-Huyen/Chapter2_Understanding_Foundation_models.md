@@ -40,6 +40,6 @@ For fullstack developers, getting a model to return JSON or YAML is often critic
 • **Failure Modes**: Developers must account for inconsistency (varying scores for the same essay) and hallucinations (responses not grounded in fact).
 • **The "Self-Delusion" Hypothesis**: One reason models hallucinate is that they cannot distinguish between the factual data you provided and the incorrect tokens they just generated.
 
--- 
+---
 
 Pro-tip for your Obsidian notes: When choosing a model for your stack, consider the Model Bandwidth Utilization (MBU) and Model FLOPs Utilization (MFU). These metrics tell you how efficiently a model uses the expensive hardware it's running on.
